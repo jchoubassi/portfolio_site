@@ -51,8 +51,7 @@ export async function sendMessage(
       to: [TO],
       subject,
       html,
-      replyTo: email, // ← correct key for the SDK
-      // bcc: [TO], // optional: keep a copy
+      replyTo: email,
     });
 
     if (error) {
