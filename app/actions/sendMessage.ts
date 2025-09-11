@@ -6,8 +6,7 @@ type FormState = { ok: boolean; error?: string };
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const TO = process.env.CONTACT_TO_EMAIL || "jenny.choubassi@gmail.com";
-const FROM =
-  process.env.CONTACT_FROM_EMAIL || "Jennifer Portfolio <onboarding@resend.dev>";
+const FROM = process.env.CONTACT_FROM_EMAIL || "Jennifer Portfolio <onboarding@resend.dev>";
 
 export async function sendMessage(
   _prev: FormState | undefined,
@@ -18,19 +17,11 @@ export async function sendMessage(
   const message = (formData.get("message") || "").toString().trim();
   const honeypot = (formData.get("company") || "").toString().trim();
 
-  // for bots
   if (honeypot) return { ok: true };
 
-  if (!name || !email || !message) {
-    return { ok: false, error: "Please fill out all required fields." };
-  }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return { ok: false, error: "Please enter a valid email address." };
-  }
-  if (!process.env.RESEND_API_KEY) {
-    console.error("[Resend] Missing RESEND_API_KEY in environment.");
-    return { ok: false, error: "Email service not configured. Please try again later." };
-  }
+  if (!name || !email || !message) return { ok: false, error: "Please fill out all required fields." };
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, error: "Please enter a valid email address." };
+  if (!process.env.RESEND_API_KEY) return { ok: false, error: "Missing RESEND_API_KEY on server." };
 
   try {
     const subject = `[Portfolio] New message from ${name}`;
@@ -40,13 +31,11 @@ export async function sendMessage(
         <p><strong>Name:</strong> ${escapeHtml(name)}</p>
         <p><strong>Email:</strong> ${escapeHtml(email)}</p>
         <p><strong>Message:</strong></p>
-        <pre style="white-space:pre-wrap;padding:12px;border:1px solid #eee;border-radius:8px;background:#fafafa">${escapeHtml(
-          message
-        )}</pre>
+        <pre style="white-space:pre-wrap;padding:12px;border:1px solid #eee;border-radius:8px;background:#fafafa">${escapeHtml(message)}</pre>
       </div>
     `;
 
-    const { error } = await resend.emails.send({
+    const result = await resend.emails.send({
       from: FROM,
       to: [TO],
       subject,
@@ -54,15 +43,17 @@ export async function sendMessage(
       replyTo: email,
     });
 
-    if (error) {
-      console.error("[Resend] send error:", error);
-      return { ok: false, error: "Email service error. Please try again." };
+    if ((result as any)?.error) {
+      console.error("[Resend] send error:", (result as any).error);
+      const msg = (result as any).error?.message || "Unknown email service error.";
+      return { ok: false, error: msg };
     }
 
     return { ok: true };
-  } catch (err) {
+  } catch (err: any) {
     console.error("[Resend] exception:", err);
-    return { ok: false, error: "Failed to send. Please try again." };
+    const msg = err?.message || "Failed to send. Please try again.";
+    return { ok: false, error: msg };
   }
 }
 
