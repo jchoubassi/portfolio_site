@@ -94,7 +94,7 @@ export default function Projects() {
   return (
     <section id="projects" className="section">
       <div className="container">
-        <h2 className="text-2xl font-semibold mb-6">Projects & Experience</h2>
+        <h2 className="text-2xl font-semibold mb-6">Selected Work</h2>
 
         <h3 className="text-lg font-semibold mb-4">Infrastructure & Systems</h3>
         <div className="space-y-6 mb-10">

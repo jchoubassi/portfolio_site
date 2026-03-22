@@ -15,7 +15,7 @@ export default function Intro() {
 
         <div className="mt-6 flex gap-3 flex-wrap">
           <a
-            href="/Jennifer-Choubassi.pdf"
+            href="/Jennifer_Choubassi.pdf"
             className="inline-flex items-center gap-2 px-4 py-2 border rounded border-brand-200 text-brand-700 hover:bg-brand-50"
           >
             <HiOutlineDocumentText className="text-brand-700" />
