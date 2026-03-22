@@ -8,7 +8,9 @@ export default function Intro() {
       <div className="container flex flex-col items-center text-center md:items-start md:text-left">
         <h1 className="text-4xl font-bold">Hi, I’m Jennifer Choubassi</h1>
         <p className="mt-4 text-lg text-gray-300 max-w-2xl">
-          IT & Software Development • C++ • Python • Java • Web • Networking
+          I work across networking, systems, and software — supporting multi-site infrastructure 
+          (15+ locations) with Cisco switching, Palo Alto firewalls, SD-WAN, and Windows Server, 
+          alongside experience in C++, Python, and Java.
         </p>
 
         <div className="mt-6 flex gap-3 flex-wrap">
@@ -17,7 +19,7 @@ export default function Intro() {
             className="inline-flex items-center gap-2 px-4 py-2 border rounded border-brand-200 text-brand-700 hover:bg-brand-50"
           >
             <HiOutlineDocumentText className="text-brand-700" />
-            Resume
+            View Resume
           </a>
           <a
             href="https://github.com/jchoubassi"
